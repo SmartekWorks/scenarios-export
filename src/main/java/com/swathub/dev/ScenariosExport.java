@@ -61,7 +61,7 @@ public class ScenariosExport {
 
 		JSONObject config = new JSONObject(FileUtils.readFileToString(configFile, "UTF-8"));
 		URIBuilder getUrl = new URIBuilder(config.getString("serverUrl"));
-		getUrl.setPath("/swathub/api/" + config.getString("workspaceOwner") + "/" +
+		getUrl.setPath("/api/" + config.getString("workspaceOwner") + "/" +
 				config.getString("workspaceName") + "/sets/" + config.getString("setID") + "/scenarios");
 
 		String results = apiGet(getUrl, config.getString("username"), config.getString("apiKey"), null);
@@ -76,7 +76,7 @@ public class ScenariosExport {
 
 			// get flow info
 			URIBuilder flowUrl = new URIBuilder(config.getString("serverUrl"));
-			flowUrl.setPath("/swathub/api/" + config.getString("workspaceOwner") + "/" +
+			flowUrl.setPath("/api/" + config.getString("workspaceOwner") + "/" +
 					config.getString("workspaceName") + "/flows/" + scenario.getString("code"));
 			flowUrl.setParameter("lang", "ja");
 			String result = apiGet(flowUrl, config.getString("username"), config.getString("apiKey"), null);
