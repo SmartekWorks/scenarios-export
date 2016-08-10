@@ -60,6 +60,19 @@ public class ScenariosExport {
 		}
 
 		JSONObject config = new JSONObject(FileUtils.readFileToString(configFile, "UTF-8"));
+
+		URIBuilder testsetUrl = new URIBuilder(config.getString("serverUrl"));
+		testsetUrl.setPath("/api/" + config.getString("workspaceOwner") + "/" +
+				config.getString("workspaceName") + "/sets/" + config.getString("setID"));
+		System.out.println(testsetUrl.toString());
+		String testsetResult = apiGet(testsetUrl, config.getString("username"), config.getString("apiKey"), null);
+		if (testsetResult == null) {
+			System.out.println("Testset not exists, file will not be created.");
+			return;
+		}
+		System.out.println(testsetResult);
+		JSONObject testset = new JSONObject(testsetResult);
+
 		URIBuilder getUrl = new URIBuilder(config.getString("serverUrl"));
 		getUrl.setPath("/api/" + config.getString("workspaceOwner") + "/" +
 				config.getString("workspaceName") + "/sets/" + config.getString("setID") + "/scenarios");
@@ -115,10 +128,10 @@ public class ScenariosExport {
 			}
 		}
 
-		File csvFile = new File(targetFolder, "export.csv");
+		File csvFile = new File(targetFolder, testset.getString("name") + ".csv");
 		FileUtils.writeStringToFile(csvFile, csv, "utf-8");
 
-		System.out.println("export.csv is created.");
+		System.out.println(testset.getString("name") + ".csv is created.");
 		System.out.println("");
 	}
 }
